@@ -14,26 +14,10 @@
         android:id="@+id/toolbar_main">
 
     </androidx.appcompat.widget.Toolbar>
-    <!--<RelativeLayout
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="70dp">
-
-        <ImageButton
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:background="@color/colorAccent"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:contentDescription="drawer button"
-            android:src="@drawable/hamburger_menu"></ImageButton>
-    </RelativeLayout>-->
 
     <ListView
+        android:id="@+id/articlesListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

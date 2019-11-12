@@ -1,14 +1,21 @@
 package com.example.gongkookmin;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +30,26 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setTitle("");
+
+        ListView listView = (ListView) findViewById(R.id.articlesListView);
+        ListViewAdapter adapter = new ListViewAdapter();
+        listView.setAdapter(adapter);
+
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C");
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserArticlesListViewItem item = (UserArticlesListViewItem) parent.getItemAtPosition(position);
+                String titleStr = item.getTitle();
+                String authorStr = item.getAuthor();
+                Drawable iconDrawable = item.getIcon();
+
+                // TODO: use item data.
+            }
+        });
     }
 
     @Override
