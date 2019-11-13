@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="1dp"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:id="@+id/articleIcon"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:paddingRight="5dp"
+        tools:srcCompat="@tools:sample/avatars" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:gravity="bottom"
+                android:layout_weight="30"
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:textSize="28dp"
+                android:text="ARTICLE_TITLE"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:gravity="center_vertical"
+                android:textSize="16dp"
+                android:text="USER_ID"
+                android:layout_weight="18"
+                android:id="@+id/authorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+        </LinearLayout>
+        <TextView
+            android:background="#EEEEEE"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:textSize="18dp"
+            android:text="99:99"
+            android:id="@+id/dateTextView">
+
+        </TextView>
+    </LinearLayout>
+</LinearLayout>

@@ -1,11 +1,14 @@
 package com.example.gongkookmin;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.Date;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
 
     Toolbar toolbar;
     ActionBar actionBar;
     DrawerLayout drawer;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
+    ListView listView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBar.setHomeAsUpIndicator(R.mipmap.baseline_menu_black_18dp);
 
         initDrawerLayout();
+        initArticleList();
     }
 
     @Override
@@ -72,6 +83,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    @Override
+    public void onRefresh() {
+
+        // TODO
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     public void initDrawerLayout(){
         drawer = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
@@ -87,5 +106,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+    }
+    public void initArticleList(){
+
+        listView = (ListView) findViewById(R.id.articlesListView);
+        ListViewAdapter adapter = new ListViewAdapter();
+        listView.setAdapter(adapter);
+
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date());
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B",new Date());
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C", new Date());
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserArticlesListViewItem item = (UserArticlesListViewItem) parent.getItemAtPosition(position);
+                String titleStr = item.getTitle();
+                String authorStr = item.getAuthor();
+                Drawable iconDrawable = item.getIcon();
+
+                // TODO: use item data.
+            }
+        });
+
+        swipeRefreshLayout = findViewById(R.id.swipelayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 }
