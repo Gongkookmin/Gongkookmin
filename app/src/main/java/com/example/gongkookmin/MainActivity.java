@@ -77,8 +77,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        /*작성자 : 이재욱
+         * 작성 시간 : 2019년 11월 15일 23시 34분 */
         switch(menuItem.getItemId()){
-
+            case R.id.btn_logout:    // 로그아웃을 큺릭하면 로그인 창으로 넘어간다.
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.tv_linkToTOS:    // 이용약관 보기를 클릭하면 이용약관을 볼 수 있다.
+                Intent tosIntent = new Intent(getApplicationContext(), TOSActivity.class);
+                startActivity(tosIntent);
         }
         return false;
     }
