@@ -1,6 +1,8 @@
 package com.example.gongkookmin;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,8 +61,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_search:
-                Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
-                startActivity(intent);
+                Intent intent_search = new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(intent_search);
+                return true;
+            case R.id.action_post:
+                Intent intent_post = new Intent(getApplicationContext(),PostActivity.class);
+                startActivity(intent_post);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

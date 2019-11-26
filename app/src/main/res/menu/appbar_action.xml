@@ -8,4 +8,10 @@
         app:showAsAction="always">
 
     </item>
+    <item
+        android:id="@+id/action_post"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Post"
+        app:showAsAction="always"
+        />
 </menu>

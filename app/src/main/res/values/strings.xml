@@ -20,4 +20,8 @@
          피카츄 라이츄 파이리 꼬북이 피카츄 라이츄 파이리 꼬북이 피카츄 라이츄 파이리 꼬북이 피카츄 라이츄 파이리 꼬북이 피카츄 라이츄 파이리 꼬북이
 
     </string>
+    <string name="post_title_rule">공구글 제목(2글자 이상, 15글자 이하)</string>
+    <string name="post_article_rule">\t공구글 내용(5글자 이상, 300글자 이하)</string>
+    <string name="post_kakaotalk_rule">그룹 채팅방으로 만들어주세요</string>
+    <string name="post_picture_rule">공구물품 사진(최소0장, 최대 3장)</string>
 </resources>
