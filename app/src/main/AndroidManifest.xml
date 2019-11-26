@@ -17,6 +17,7 @@
         <activity android:name=".TOSActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoadActivity"
             android:theme="@style/LoadTheme">
             <intent-filter>
