@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,30 +15,6 @@
         android:text="공 국 민   회 원 가 입"
         android:textColor="#000000"
         android:textSize="30sp" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30sp"
-            android:text="닉 네 임"
-            android:textColor="#000000"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/nickNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,16 +85,15 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/imgNotSame"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:scaleType="fitStart" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnPasswordConfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10sp"
-            android:layout_weight="1"
-            android:text="비밀번호 확인" />
     </LinearLayout>
 
     <LinearLayout
