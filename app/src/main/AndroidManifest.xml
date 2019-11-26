@@ -12,6 +12,7 @@
         <activity android:name=".TOSActivity"></activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
