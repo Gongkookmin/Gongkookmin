@@ -24,7 +24,7 @@ import android.widget.ListView;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener{
 
     Toolbar toolbar;
     ActionBar actionBar;
@@ -91,6 +91,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        UserArticlesListViewItem item = (UserArticlesListViewItem) adapterView.getItemAtPosition(i);
+        String titleStr = item.getTitle();
+        String authorStr = item.getAuthor();
+        Drawable iconDrawable = item.getIcon();
+
+    }
+
     public void initDrawerLayout(){
         drawer = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
@@ -117,18 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B",new Date());
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C", new Date());
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserArticlesListViewItem item = (UserArticlesListViewItem) parent.getItemAtPosition(position);
-                String titleStr = item.getTitle();
-                String authorStr = item.getAuthor();
-                Drawable iconDrawable = item.getIcon();
-
-                // TODO: use item data.
-            }
-        });
-
+        listView.setOnItemClickListener(this);
         swipeRefreshLayout = findViewById(R.id.swipelayout);
         swipeRefreshLayout.setOnRefreshListener(this);
     }
