@@ -57,7 +57,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     public void initPictureListView(){
-        final PictureListViewAdapter adapter = new PictureListViewAdapter(getApplicationContext(),pictureList);
+        final PictureListViewAdapter adapter = new PictureListViewAdapter(getApplicationContext(),pictureList, PictureListViewAdapter.EDIT_MODE);
         btnAddPicture = findViewById(R.id.btn_addPicture);
         pictureListView = findViewById(R.id.pictureListView);
         pictureListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

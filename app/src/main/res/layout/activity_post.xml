@@ -7,106 +7,120 @@
     android:orientation="vertical"
     tools:context=".PostActivity">
 
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorAccent"
         android:id="@+id/toolbar_post"/>
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="글 제목"/>
-        <EditText
-            android:id="@+id/titleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/post_title_rule"
-            android:maxLength="15"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="글 내용"/>
-        <EditText
-            android:scrollbars="horizontal"
-            android:id="@+id/articleEditText"
-            android:layout_marginRight="3px"
-            android:padding="5px"
-            android:background="@drawable/square_shape"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:hint="@string/post_article_rule"
-            android:maxLength="300"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000"/>
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오픈카톡 주소"/>
-        <EditText
-            android:singleLine="true"
-            android:id="@+id/kakaotalkEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/post_kakaotalk_rule"
-            android:maxLength="100"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"/>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
 
-        <TextView
-            android:layout_marginTop="5dp"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/post_picture_rule"/>
-        <android.support.v7.widget.RecyclerView
-            android:background="#F0F0F0"
-            android:layout_weight="1"
-            android:scrollbars="horizontal"
-            android:id="@+id/pictureListView"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <Button
-            android:id="@+id/btn_addPicture"
-            android:text="사진 추가"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="글 제목"/>
+                <EditText
+                    android:id="@+id/titleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/post_title_rule"
+                    android:maxLength="15"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="글 내용"/>
+                <EditText
+                    android:scrollbars="horizontal"
+                    android:id="@+id/articleEditText"
+                    android:layout_marginRight="3px"
+                    android:padding="5px"
+                    android:background="@drawable/square_shape"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:hint="@string/post_article_rule"
+                    android:maxLength="300"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000"/>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오픈카톡 주소"/>
+                <EditText
+                    android:singleLine="true"
+                    android:id="@+id/kakaotalkEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/post_kakaotalk_rule"
+                    android:maxLength="100"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/post_picture_rule"/>
+                <android.support.v7.widget.RecyclerView
+                    android:background="#F0F0F0"
+                    android:layout_weight="1"
+                    android:scrollbars="horizontal"
+                    android:id="@+id/pictureListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+                <Button
+                    android:layout_marginBottom="10px"
+                    android:background="@color/colorAccent"
+                    android:id="@+id/btn_addPicture"
+                    android:text="사진 추가"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
