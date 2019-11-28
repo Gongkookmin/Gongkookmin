@@ -21,21 +21,21 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final EditText emailedit = (EditText)findViewById(R.id.mailText);
-        final EditText passwordeidt = (EditText)findViewById(R.id.passwordText);
-        final EditText passwordcheckEdit = (EditText)findViewById(R.id.passwordCheckText);
+        final EditText emailEdit = (EditText)findViewById(R.id.mailText);
+        final EditText passwordEdit = (EditText)findViewById(R.id.passwordText);
+        final EditText passwordCheckEdit = (EditText)findViewById(R.id.passwordCheckText);
         final RadioButton Use_radio = (RadioButton)findViewById(R.id.btnAgree);
 
         final ImageView correctImg = (ImageView)findViewById(R.id.imgNotSame);
 
         /* 작성자 : 이재욱 */
-        passwordcheckEdit.addTextChangedListener(new TextWatcher() {    // Checking password
+        passwordCheckEdit.addTextChangedListener(new TextWatcher() {    // Checking password
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (passwordeidt.getText().toString().equals(passwordcheckEdit.getText().toString())) { correctImg.setImageResource(android.R.drawable.presence_online); }
+                if (passwordEdit.getText().toString().equals(passwordCheckEdit.getText().toString())) { correctImg.setImageResource(android.R.drawable.presence_online); }
                 else { correctImg.setImageResource(android.R.drawable.ic_delete); }
             }
 
@@ -48,22 +48,19 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {    // Make json object contains 'email', 'password', 'use'
             @Override
             public void onClick(View v) {
-                String email = emailedit.getText().toString();
-                String password = passwordeidt.getText().toString();
+                String email = emailEdit.getText().toString();
+                String password = passwordEdit.getText().toString();
                 boolean use = Use_radio.isChecked();
-                if (use && (passwordeidt.getText().toString().equals(passwordcheckEdit.getText().toString()))) {
-                    try {
-                        final JSONObject file = new JSONObject();
+                if (use && (passwordEdit.getText().toString().equals(passwordCheckEdit.getText().toString()))) {
+                    final JsonMaker json = new JsonMaker();
 
-                        file.put("EMAIL", email);
-                        file.put("password", password);
-                        file.put("USE", use);
+                    json.putData("EMAIL", email);
+                    json.putData("password", password);
+                    json.putData("USE", use);
 
-                        final String data = file.toString();
-                        System.out.print(data + "\n");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    final String data = json.toString();
+                    System.out.print(data + "\n");
+
 
                     Toast.makeText(getApplicationContext(), "회원가입이 성공적으로 진행됐습니다.", Toast.LENGTH_SHORT).show();
                     finish();

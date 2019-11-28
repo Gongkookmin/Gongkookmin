@@ -3,6 +3,7 @@ package com.example.gongkookmin;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -106,18 +107,28 @@ public class PostActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
-            case android.R.id.home:{
+            case android.R.id.home:{    // appbar의 뒤로가기
                 finish();
                 return true;
             }
-            case R.id.action_write_post:{
+            case R.id.action_write_post:{   // appbar의 작성 버튼
                 String title = titleEditText.getText().toString().trim();
                 String article = articleEditText.getText().toString().trim();
                 String kakaotalk = kakaotalkEditText.getText().toString().trim();
 
-                if(isArticleRuleOK(title,article,kakaotalk)){
-                    Toast.makeText(this, "게시글이 작성되었습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
+                if(isArticleRuleOK(title,article,kakaotalk)){   // 규칙 확인
+                    JsonMaker json = new JsonMaker();
+                    json.putData("title",title);
+                    json.putData("body",article);
+                    json.putData("open_kakao_link",kakaotalk);
+
+                    json.putData("owner", "1"); // TODO
+
+                    BackgroundTask task = new BackgroundTask();
+                    task.execute("https://www.google.co.kr/",HttpRequestHelper.GET,null);
+
+                    //Toast.makeText(this, "게시글이 작성되었습니다.", Toast.LENGTH_SHORT).show();
+                    //finish();
                 }
                 else
                     Toast.makeText(this, "양식에 맞게 글을 작성해 주세요.", Toast.LENGTH_SHORT).show();
@@ -128,21 +139,60 @@ public class PostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    class BackgroundTask extends AsyncTask<String,Boolean,Boolean>{
+
+        HttpRequestHelper httpRequestHelper;
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            httpRequestHelper = new HttpRequestHelper(strings[0]);  // [0] 은 url 주소.
+            httpRequestHelper.setRequestMethod(strings[1]); // [1] 은 http method
+            httpRequestHelper.setData(strings[2]);  // [2] 는 데이터
+            publishProgress(httpRequestHelper.sendData());
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            toolbar.setTitle(httpRequestHelper.getData());
+            Log.d("data = ", " " + httpRequestHelper.getData());
+        }
+
+        @Override
+        protected void onProgressUpdate(Boolean... values) {
+            super.onProgressUpdate(values);
+            if(values[0]){
+                Toast.makeText(PostActivity.this, "게시글을 작성했습니다", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else{
+                Toast.makeText(PostActivity.this, "서버와의 연결에 문제가 있습니다", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_appbar_action,menu);
+        getMenuInflater().inflate(R.menu.post_appbar_action,menu);  // appbar에 menu 입히기
         return true;
     }
 
     public boolean isArticleRuleOK(String title, String article, String kakaotalk){
         int title_len = title.length();
         int article_len = article.length();
-        if(title_len < 2 || title_len > 15)
+        if(title_len < 2 || title_len > 15) // 제목 길이 2 ~ 15 규칙 확인
             return false;
-        if(article_len < 5 || article_len > 300)
+        if(article_len < 5 || article_len > 300) // 본문 길이 5 ~ 300 규칙 확인
             return false;
 
-        String pattern = "^((http(s)?://)?open.kakao.com/o/)[a-zA-Z0-9]+$";
+        String pattern = "^((http(s)?://)?open.kakao.com/o/)[a-zA-Z0-9]+$"; // 링크가 오픈카톡이 맞는지 확인
 
         if(Pattern.matches(pattern,kakaotalk)){
             return true;
