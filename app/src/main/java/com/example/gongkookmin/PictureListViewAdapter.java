@@ -14,11 +14,16 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListViewAdapter.ViewHolder> {
-    private ArrayList<Bitmap> pictureList;
-    private Context context;
+    public static final int VIEW_MODE = 1;  // 사진 보기 모드
+    public static final int EDIT_MODE = 2;  // 사진 삭제 모드
 
-    public PictureListViewAdapter(Context context, ArrayList<Bitmap> pictureList){
+    private ArrayList<Bitmap> pictureList;  // 사진 목록
+    private Context context;
+    int mode;
+
+    public PictureListViewAdapter(Context context, ArrayList<Bitmap> pictureList, int mode){
         this.pictureList = pictureList;
+        this.mode = mode;
     }
 
     @NonNull
@@ -27,7 +32,7 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
         this.context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_post_pictures,parent,false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mode);
     }
 
     @Override
@@ -38,21 +43,33 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
-        public ViewHolder(View itemView){
+        int mode;
+        public ViewHolder(View itemView, int mode){
             super(itemView);
+            this.mode = mode;
             imageView = itemView.findViewById(R.id.pictureImageView);
             imageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            try{
-                int position = getAdapterPosition();
-                pictureList.remove(position);
-                notifyItemRemoved(position);
-                Log.d("adapter ", " delete ");
-            }catch (IndexOutOfBoundsException e){
-                e.printStackTrace();
+            switch (mode) {
+                case EDIT_MODE: {
+                    try {
+                        int position = getAdapterPosition();
+                        pictureList.remove(position);
+                        notifyItemRemoved(position);
+                        Log.d("adapter ", " delete ");
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case VIEW_MODE: {
+                    // TODO
+
+                    break;
+                }
             }
         }
     }
