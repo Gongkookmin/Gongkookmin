@@ -1,9 +1,11 @@
 package com.example.gongkookmin;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +16,23 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
+
+    public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile("^[a-zA-Z0-9]+@kookmin.ac.kr+$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern EMAIL_PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
+
+
+    private boolean checkEmail(String email) {
+        return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
+    }
+
+
+    private boolean checkPassword(String password) {
+        return EMAIL_PASSWORD_PATTERN.matcher(password).matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +69,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = emailedit.getText().toString();
                 String password = passwordeidt.getText().toString();
                 boolean use = Use_radio.isChecked();
-                if (use && (passwordeidt.getText().toString().equals(passwordcheckEdit.getText().toString()))) {
+                if(!checkEmail(email)){
+                    Toast.makeText(getApplicationContext(), "Email 형식을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else if(!checkPassword(password)){
+                    Toast.makeText(getApplicationContext(), "비밀번호 형식을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else if(!passwordeidt.getText().toString().equals(passwordcheckEdit.getText().toString())){
+                    Toast.makeText(getApplicationContext(), "비밀번호가 확인과 같은지 확인해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else if(!use){
+                    Toast.makeText(getApplicationContext(), "이용약관에 동의해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                     try {
                         final JSONObject file = new JSONObject();
 
@@ -67,9 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "회원가입이 성공적으로 진행됐습니다.", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "동의하셔야 합니다.\n동의하셨다면 비밀번호가 맞는지 다시 확인하세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
