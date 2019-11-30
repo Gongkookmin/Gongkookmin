@@ -1,10 +1,15 @@
 package com.example.gongkookmin;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -17,10 +22,13 @@ public class HttpRequestHelper {
     public static final String PUT = "PUT";
 
 
+    String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Ijg5ODI2NzkiLCJleHAiOjE1NzUwMjI1NzgsImVtYWlsIjoiODk4MjY3OUBnbWFpbC5jb20ifQ.Lm9hMHdeSrtD1ArbmccMi7sWa_DCXPLe0Dk9Y79Yg8U";
+    // 삭제해야됨.
+
     URL url;
     HttpURLConnection connection = null;
     String requestMethod;
-    StringBuffer data;
+    String data;
 
     String result = "";
 
@@ -55,38 +63,51 @@ public class HttpRequestHelper {
     }
 
     public void setData(String data){
-        this.data = new StringBuffer();
-        if(data == null){
-            this.data.append("");
+        try {
+            if (data == null) {
+                this.data = new String("".getBytes(), "utf-8");
+            } else {
+                this.data = new String(data.getBytes(),"utf-8");
+            }
         }
-        else{
-            this.data.append(data);
+        catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            this.data = new String("");
         }
     }
 
     public boolean sendByPost(){
+        boolean isOK = true;
         try {
+            Log.d("data ",data);
             connection.setReadTimeout(5000);
             connection.setConnectTimeout(5000);
             connection.setRequestMethod(requestMethod);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Accept-Charset", "utf-8");
+            connection.setRequestProperty("authorization",TOKEN);
+            connection.setRequestProperty("charset","UTF-8");
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
             connection.setRequestProperty("Context_Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Accept","*/*");
             connection.setUseCaches(false);
             connection.setDefaultUseCaches(false);
+            if(requestMethod != GET)
+                connection.setDoInput(true);
+            connection.setDoOutput(true);
 
-            PrintWriter writer;
-            writer = new PrintWriter(new OutputStreamWriter(connection.getOutputStream()));
+            DataOutputStream writer;
+            writer = new DataOutputStream(connection.getOutputStream());
 
-            writer.write(data.toString());
+            writer.write(data.getBytes("UTF-8"));
             writer.flush();
             writer.close();
 
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
-                return false;
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+            BufferedReader reader;
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(),"UTF-8"));
+                isOK = false;
+            }
+            else
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 
             String line;
             result = "";
@@ -107,7 +128,7 @@ public class HttpRequestHelper {
             if(connection != null)
                 connection.disconnect();
         }
-        return true;
+        return isOK;
 
     }
 

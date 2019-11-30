@@ -125,10 +125,8 @@ public class PostActivity extends AppCompatActivity {
                     json.putData("owner", "1"); // TODO
 
                     BackgroundTask task = new BackgroundTask();
-                    task.execute("https://www.google.co.kr/",HttpRequestHelper.GET,null);
 
-                    //Toast.makeText(this, "게시글이 작성되었습니다.", Toast.LENGTH_SHORT).show();
-                    //finish();
+                    task.execute("http://61.37.57.170:8000/offer/",HttpRequestHelper.POST,json.toString());
                 }
                 else
                     Toast.makeText(this, "양식에 맞게 글을 작성해 주세요.", Toast.LENGTH_SHORT).show();
@@ -161,7 +159,6 @@ public class PostActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            toolbar.setTitle(httpRequestHelper.getData());
             Log.d("data = ", " " + httpRequestHelper.getData());
         }
 

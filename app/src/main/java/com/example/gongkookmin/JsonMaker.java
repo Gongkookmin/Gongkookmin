@@ -1,26 +1,31 @@
 package com.example.gongkookmin;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class JsonMaker {
-    private JSONObject file;
+    private HashMap<String, Object> json;
 
     public JsonMaker(){
-        file = new JSONObject();
+        json = new HashMap<>();
     }
 
     public boolean putData(String name, Object data){
-        try{
-            file.put(name,data);
-        }catch (JSONException e){
-            e.printStackTrace();
-            return false;
-        }
+        json.put(name,data);
         return true;
     }
 
     public String toString() {
-        return file.toString();
+        String str = "";
+        Set set = json.keySet();
+        Iterator iter = set.iterator();
+        while(iter.hasNext()){
+            String key = (String)iter.next();
+            str += key + "=" + json.get(key);
+            if(iter.hasNext())
+                str += "&";
+        }
+        return str;
     }
 }
