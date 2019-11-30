@@ -2,6 +2,9 @@ package com.example.gongkookmin;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -78,6 +81,7 @@ public class HttpRequestHelper {
 
     public boolean sendByPost(){
         boolean isOK = true;
+        result = "";
         try {
             Log.d("data ",data);
             connection.setReadTimeout(5000);
@@ -86,20 +90,23 @@ public class HttpRequestHelper {
             connection.setRequestProperty("authorization",TOKEN);
             connection.setRequestProperty("charset","UTF-8");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
-            connection.setRequestProperty("Context_Type", "application/x-www-form-urlencoded");
+            //connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type","application/json");
             connection.setRequestProperty("Accept","*/*");
             connection.setUseCaches(false);
             connection.setDefaultUseCaches(false);
             if(requestMethod != GET)
-                connection.setDoInput(true);
-            connection.setDoOutput(true);
+                connection.setDoOutput(true);
+            connection.setDoInput(true);
 
-            DataOutputStream writer;
-            writer = new DataOutputStream(connection.getOutputStream());
+            if(requestMethod != GET) {
+                DataOutputStream writer;
+                writer = new DataOutputStream(connection.getOutputStream());
 
-            writer.write(data.getBytes("UTF-8"));
-            writer.flush();
-            writer.close();
+                writer.write(data.getBytes("UTF-8"));
+                writer.flush();
+                writer.close();
+            }
 
             BufferedReader reader;
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -115,12 +122,15 @@ public class HttpRequestHelper {
                 result += line;
             }
         }catch (ProtocolException e){
+            result="";
             e.printStackTrace();
             return false;
         }catch (IOException e){
+            result="";
             e.printStackTrace();
             return false;
         }catch (Exception e){
+            result="";
             e.printStackTrace();
             return false;
         }
@@ -136,6 +146,7 @@ public class HttpRequestHelper {
         if(isConnectionNull())
             return false;   // connection이 안만들어졋다면 문제가 있기때문에 false. 이 값으로 알림 만들기.
         switch(requestMethod){
+            case GET :
             case POST :
                 return sendByPost();
         }
@@ -144,5 +155,16 @@ public class HttpRequestHelper {
 
     public String getData(){
         return result;
+    }
+    public JSONObject getDataByJSONObject(){
+        try {
+            if(result.trim() == "")
+                return null;
+            JSONObject json = new JSONObject(result);
+            return json;
+        }catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

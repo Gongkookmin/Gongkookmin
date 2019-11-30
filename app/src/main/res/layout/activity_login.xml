@@ -7,7 +7,7 @@
     tools:context=".LoginActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/inputID_EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -18,12 +18,12 @@
         android:hint="ID"/>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/inputPW_EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
+        android:layout_below="@+id/inputID_EditText"
+        android:layout_alignStart="@+id/inputID_EditText"
+        android:layout_alignLeft="@+id/inputID_EditText"
         android:layout_marginTop="2dp"
         android:hint="PW"
         android:ems="10"
@@ -33,9 +33,9 @@
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_alignLeft="@+id/editText2"
+        android:layout_below="@+id/inputPW_EditText"
+        android:layout_alignStart="@+id/inputPW_EditText"
+        android:layout_alignLeft="@+id/inputPW_EditText"
         android:layout_marginTop="2dp"
         android:text="LOGIN" />
 
@@ -43,8 +43,8 @@
         android:id="@+id/btn_go_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
+        android:layout_below="@+id/inputPW_EditText"
+        android:layout_alignRight="@+id/inputPW_EditText"
         android:layout_marginTop="2dp"
         android:text="REGISTER" />
 </RelativeLayout>

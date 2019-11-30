@@ -3,6 +3,9 @@
 package com.example.gongkookmin;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,9 @@ public class UserArticlesListViewItem {
     /* Setter Methods */
     public void setIcon(Drawable icon) {
         iconDrawable = icon;
+    }
+    public void setIcon(Resources resources, Bitmap bitmap){
+        iconDrawable = new BitmapDrawable(resources,bitmap);
     }
     public void setTitle(String title) {
         titleStr = title;

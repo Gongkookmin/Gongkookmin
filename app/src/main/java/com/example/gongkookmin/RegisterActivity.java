@@ -1,10 +1,12 @@
 package com.example.gongkookmin;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,20 +100,57 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    final JsonMaker json = new JsonMaker();
-
-                    json.putData("EMAIL", email);
-                    json.putData("password", password);
-                    json.putData("USE", use);
-
-                    final String data = json.toString();
-                    System.out.print(data + "\n");
-
-
-                    Toast.makeText(getApplicationContext(), "회원가입이 성공적으로 진행됐습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
+                    JSONObject json = new JSONObject();
+                    try {
+                        JSONArray array = new JSONArray();
+                        JSONObject user = new JSONObject();
+                        user.put("username", email);
+                        user.put("password",password);
+                        user.put("first_name","");
+                        user.put("last_name","");
+                        user.put("USE",use);
+                        array.put(user);
+                        json.put("user",user);
+                    }catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    BackgroundTask task = new BackgroundTask();
+                    task.execute(getResources().getString(R.string.server_address)+"users/create",
+                            HttpRequestHelper.POST,json.toString());
                 }
             }
         });
     }
+
+    class BackgroundTask extends CommunicationTask {
+
+        @Override
+        protected void onProgressUpdate(Boolean... values) {
+            super.onProgressUpdate(values);
+            JSONObject jsonObject;
+            jsonObject = httpRequestHelper.getDataByJSONObject();   // 서버에게 받은 json
+            if(jsonObject == null) {
+                Toast.makeText(RegisterActivity.this, "서버와의 연결에 문제가 있습니다", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(values[0]) {
+                try {
+                    if (jsonObject.getString("response").equals("error")) {
+                        Log.d("data ",httpRequestHelper.getData());
+                        Toast.makeText(RegisterActivity.this, "회원가입 양식을 다시 확인해주세요", Toast.LENGTH_SHORT).show();
+                    } else if (jsonObject.getString("response").equals("success")){
+                        Toast.makeText(RegisterActivity.this, "회원가입이 정상적으로 처리되었습니다. 메일을 확인해주세요", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(RegisterActivity.this, "서버와의 연결에 문제가 있습니다", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(RegisterActivity.this, "아이디 혹은 비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

@@ -38,6 +38,9 @@ public class PostActivity extends AppCompatActivity {
     EditText kakaotalkEditText;
     Button btnAddPicture;
 
+    boolean lockPost = false;   // 글쓰기를 여러번 누를시 여러개의 글이 생기는 경우 방지
+    boolean isPostComplete = false; // 글 작성이 완료된 경우. lockPost는 글작성 이전까지의 락, isPost는 작성 이후 종료까지의 락
+
     ArrayList<Bitmap> pictureList = new ArrayList<>();
 
     @Override
@@ -112,11 +115,14 @@ public class PostActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.action_write_post:{   // appbar의 작성 버튼
+                if(lockPost || isPostComplete)
+                    return true;
                 String title = titleEditText.getText().toString().trim();
                 String article = articleEditText.getText().toString().trim();
                 String kakaotalk = kakaotalkEditText.getText().toString().trim();
 
                 if(isArticleRuleOK(title,article,kakaotalk)){   // 규칙 확인
+                    lockPost = true;
                     JsonMaker json = new JsonMaker();
                     json.putData("title",title);
                     json.putData("body",article);
@@ -126,7 +132,8 @@ public class PostActivity extends AppCompatActivity {
 
                     BackgroundTask task = new BackgroundTask();
 
-                    task.execute("http://61.37.57.170:8000/offer/",HttpRequestHelper.POST,json.toString());
+                    task.execute(getResources().getString(R.string.server_address) + "offer/"
+                            ,HttpRequestHelper.POST,json.toString());
                 }
                 else
                     Toast.makeText(this, "양식에 맞게 글을 작성해 주세요.", Toast.LENGTH_SHORT).show();
@@ -137,35 +144,18 @@ public class PostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class BackgroundTask extends AsyncTask<String,Boolean,Boolean>{
-
-        HttpRequestHelper httpRequestHelper;
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            httpRequestHelper = new HttpRequestHelper(strings[0]);  // [0] 은 url 주소.
-            httpRequestHelper.setRequestMethod(strings[1]); // [1] 은 http method
-            httpRequestHelper.setData(strings[2]);  // [2] 는 데이터
-            publishProgress(httpRequestHelper.sendData());
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
+    class BackgroundTask extends CommunicationTask{
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Log.d("data = ", " " + httpRequestHelper.getData());
+            lockPost = false;   // 완료된 시점에서 글작성 락 해제
         }
 
         @Override
         protected void onProgressUpdate(Boolean... values) {
             super.onProgressUpdate(values);
             if(values[0]){
+                isPostComplete = true;
                 Toast.makeText(PostActivity.this, "게시글을 작성했습니다", Toast.LENGTH_SHORT).show();
                 finish();
             }
