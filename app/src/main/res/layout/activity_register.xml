@@ -63,7 +63,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -93,6 +92,15 @@
                 android:layout_marginLeft="40sp"
                 android:text="동의하지 않음" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/tosTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="이용 약관 바로가기"
+            android:textSize="17sp" />
     </LinearLayout>
 
     <Button

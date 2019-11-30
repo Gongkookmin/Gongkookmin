@@ -1,5 +1,6 @@
 package com.example.gongkookmin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -41,6 +43,19 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText emailEdit = (EditText)findViewById(R.id.mailText);
         final EditText passwordEdit = (EditText)findViewById(R.id.passwordText);
         final EditText passwordCheckEdit = (EditText)findViewById(R.id.passwordCheckText);
+
+        /* 작성자 : 이재욱
+           업데이트 : 2019년 11월 30일 12시
+           이용 약관 바로 가기를 누르면 TOSActivity로 넘어간다. */
+        TextView linkToTOS = (TextView)findViewById(R.id.tosTextView);
+        linkToTOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TOSActivity.class);
+                startActivity(intent);
+            }
+        });
+
         final RadioButton Use_radio = (RadioButton)findViewById(R.id.btnAgree);
 
         final ImageView correctImg = (ImageView)findViewById(R.id.imgNotSame);
