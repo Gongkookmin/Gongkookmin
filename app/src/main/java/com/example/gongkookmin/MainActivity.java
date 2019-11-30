@@ -1,8 +1,9 @@
 package com.example.gongkookmin;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,16 +16,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener{
 
@@ -84,12 +88,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         /*작성자 : 이재욱
-         * 작성 시간 : 2019년 11월 15일 23시 34분 */
+         * 작성 시간 : 2019년 11월 15일 23시 34분
+         * 업데이트 : 2019년 11월 29일 16시 43분 - 내 공구상자로 넘어갈 수 있게 추가 */
         switch(menuItem.getItemId()){
             case R.id.btn_logout:    // 로그아웃을 큺릭하면 로그인 창으로 넘어간다.
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+                Intent intent_logout = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent_logout);
+                break;
+            case R.id.btn_mypage:    // 내 공구상자를 클릭하면 MyPageActivity로 넘어간다.
+                Intent intent_mypage = new Intent(getApplicationContext(), MyPageActivity.class);
+                startActivity(intent_mypage);
                 break;
         }
         return false;
@@ -99,17 +107,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRefresh() {
 
         // TODO
-
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    /* 작성자 : 이재욱
+       업데이트 : 2019년 11월 29일 2시 30분
+       작성자 이름과 사진을 인텐트를 통해서 ArticleActivity로 보낼 수 있게 기능을 추가하였다. */
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {    // item을 클릭하면 ArticleActivity로 넘어간다.
 
         UserArticlesListViewItem item = (UserArticlesListViewItem) adapterView.getItemAtPosition(i);
-        String titleStr = item.getTitle();
         String authorStr = item.getAuthor();
+        String titleStr = item.getTitle();
         Drawable iconDrawable = item.getIcon();
+
+        /* Change drawable object to bitmap object for sending via intent */
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap iconBitmap = ((BitmapDrawable) iconDrawable).getBitmap();
+        float scale = (float) (1024 / (float)iconBitmap.getWidth());
+        int width = (int) (iconBitmap.getWidth() * scale);
+        int height = (int) (iconBitmap.getHeight() * scale);
+        Bitmap resizedIcon = Bitmap.createScaledBitmap(iconBitmap, width, height, true);
+        resizedIcon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        Intent intent = new Intent(getApplication(), ArticleActivity.class);
+        intent.putExtra("author", authorStr);
+        intent.putExtra("iconBitmap", byteArray);
+        startActivity(intent);
 
     }
 
@@ -133,12 +158,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         listView = (ListView) findViewById(R.id.articlesListView);
         ListViewAdapter adapter = new ListViewAdapter();
-        listView.setAdapter(adapter);
 
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date());
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B",new Date());
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C", new Date());
 
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         swipeRefreshLayout = findViewById(R.id.swipelayout);
         swipeRefreshLayout.setOnRefreshListener(this);
