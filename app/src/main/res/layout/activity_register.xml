@@ -17,6 +17,14 @@
         android:textSize="50sp" />
 
         <EditText
+            android:id="@+id/nicknameText"
+            android:layout_width="277dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="Nickname" />
+
+        <EditText
             android:id="@+id/mailText"
             android:layout_width="277dp"
             android:layout_height="wrap_content"
