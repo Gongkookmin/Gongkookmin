@@ -55,17 +55,18 @@ public class ListViewAdapter extends BaseAdapter {
         iconImageView.setImageDrawable(listViewItem.getIcon());
         titleTextView.setText(listViewItem.getTitle());
         authorTextView.setText(listViewItem.getAuthor());
-        dateTextView.setText(listViewItem.getArticleDate().getHours() + ":" + listViewItem.getArticleDate().getMinutes());
+        dateTextView.setText(listViewItem.getArticleDate().getHour() + ":" + listViewItem.getArticleDate().getMinute());
 
         return convertView;
     }
 
-    public void addItem(Drawable icon, String title, String author, Date date,int id) {
+    public void addItem(Drawable icon, String title, String author, DateHelper date,int id) {
         UserArticlesListViewItem item = new UserArticlesListViewItem();
 
         item.setIcon(icon);
         item.setTitle(title);
         item.setAuthor(author);
+        date.process();
         item.setArticleDate(date);
         item.setId(id);
 

@@ -26,6 +26,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:maxLines="2"
+                android:autoSizeMaxTextSize="28dp"
+                android:autoSizeMinTextSize="14dp"
+                android:autoSizeTextType="uniform"
                 android:gravity="bottom"
                 android:layout_weight="30"
                 android:id="@+id/titleTextView"

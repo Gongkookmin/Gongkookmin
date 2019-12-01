@@ -131,7 +131,7 @@ public class PostActivity extends AppCompatActivity {
                     json.putData("body",article);
                     json.putData("open_kakao_link",kakaotalk);
 
-                    json.putData("owner", "1"); // TODO
+                    //json.putData("owner", "1"); // TODO
 
                     BackgroundTask task = new BackgroundTask();
 

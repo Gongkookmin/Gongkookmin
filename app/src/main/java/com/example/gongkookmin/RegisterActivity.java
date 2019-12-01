@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
                         json.put("email", email);
                         json.put("password1",password);
                         json.put("password2",password);
-                        json.put("username","jo");
+                        json.put("username",nickname);
                     }catch(JSONException e) {
                         e.printStackTrace();
                     }

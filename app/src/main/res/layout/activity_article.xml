@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
+    <ProgressBar
+        android:id="@+id/detail_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -26,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"/>
     <TextView
+        android:id="@+id/detail_Body_TextView"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"

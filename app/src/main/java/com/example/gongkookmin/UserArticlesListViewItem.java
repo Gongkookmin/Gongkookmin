@@ -24,7 +24,7 @@ public class UserArticlesListViewItem {
     private Drawable iconDrawable;
     private String titleStr;
     private String authorStr;
-    private Date articleDate;
+    private DateHelper articleDate;
     private int id;
 
     /* Setter Methods */
@@ -44,7 +44,7 @@ public class UserArticlesListViewItem {
     public void setAuthor(String author) {
         authorStr = author;
     }
-    public void setArticleDate(Date date){ articleDate = date;}
+    public void setArticleDate(DateHelper date){ articleDate = date;}
 
     /* Getter Methods */
     public Drawable getIcon() {
@@ -56,7 +56,7 @@ public class UserArticlesListViewItem {
     public String getAuthor() {
         return this.authorStr;
     }
-    public Date getArticleDate(){return this.articleDate;}
+    public DateHelper getArticleDate(){return this.articleDate;}
     public int getId() {
         return id;
     }

@@ -19,6 +19,7 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/search_input"
                 android:background="#FFFFFF"
                 android:layout_weight="10"
                 android:layout_width="match_parent"
@@ -27,6 +28,7 @@
 
             </EditText>
             <Button
+                android:id="@+id/search_button"
                 android:background="#D6D7D7"
                 android:layout_weight="40"
                 android:layout_width="match_parent"
@@ -36,10 +38,21 @@
             </Button>
         </LinearLayout>
     </LinearLayout>
-    <ListView
-        android:id="@+id/searchedArticlesListView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_alignParentBottom="true"
+            android:id="@+id/search_progressBar"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ListView
+            android:id="@+id/searchedArticlesListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </ListView>
+        </ListView>
+
+    </RelativeLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.gongkookmin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TokenHelper tokenHelper;
 
+    BackgroundTask task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +87,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
+        isListEnd = task.isListEnd();
         if(i == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && isItemEnd){
             if(isListEnd){
                 Toast.makeText(this, "마지막 페이지 입니다", Toast.LENGTH_SHORT).show();
                 return;
             }
             progressBar.setVisibility(View.VISIBLE);
-            BackgroundTask task = new BackgroundTask();
+            task = new BackgroundTask(getApplicationContext(),listAdapter);
             task.execute(nextURL,HttpRequestHelper.GET,null);
         }
     }
@@ -157,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         isItemEnd = false;
         listAdapter = new ListViewAdapter();
         listView.setAdapter(listAdapter);
-        BackgroundTask task = new BackgroundTask();
+        task = new BackgroundTask(getApplicationContext(),listAdapter);
         task.execute(getResources().getString(R.string.server_address)+"offer/"
                 ,HttpRequestHelper.GET,null);
     }
@@ -196,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     public void initArticleList(){
-
         listView = (ListView) findViewById(R.id.articlesListView);
         listAdapter = new ListViewAdapter();
         listView.setAdapter(listAdapter);
@@ -206,12 +210,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         progressBar = findViewById(R.id.progressBar);
         listView.setOnScrollListener(this);
 
-        BackgroundTask task = new BackgroundTask();
+        task = new BackgroundTask(getApplicationContext(),listAdapter);
         task.execute(getResources().getString(R.string.server_address)+"offer/"
                 ,HttpRequestHelper.GET,null);
     }
 
-    class BackgroundTask extends CommunicationTask{
+
+    class BackgroundTask extends ListGetTask{
+
+        public BackgroundTask(Context context, ListViewAdapter listViewAdapter){
+            super(context,listViewAdapter);
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -221,55 +231,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            progressBar.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-
-        @Override
-        protected void onProgressUpdate(Boolean... values) {
-            super.onProgressUpdate(values);
-            JSONObject jsonObject;
-            jsonObject = httpRequestHelper.getDataByJSONObject();   // 서버에게 받은 json
-            if(jsonObject == null) {
-                Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(values[0]){
-                try {
-                    if(jsonObject.isNull("next")){
-                        isListEnd = true;
-                    }
-                    else{
-                        String next = jsonObject.getString("next");
-                        nextURL = (next);
-                    }
-                    JSONArray list = jsonObject.getJSONArray("results");
-                    for(int i = 0;i<list.length();i++){
-                        JSONObject offer = list.getJSONObject(i);
-                        Drawable image;
-                        if(offer.isNull("image")){
-                            image = ContextCompat.getDrawable(MainActivity.this,R.drawable.basic_image);
-                        }
-                        else{
-                            byte[] encodeByte = Base64.decode(offer.getString("image"),Base64.DEFAULT);
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
-                            image = new BitmapDrawable(getApplicationContext().getResources(),bitmap);
-                        }
-                        String title = offer.getString("title");
-                        String updateTime = offer.getString("updated_at");
-                        String owner = offer.getString("owner");
-                        int id = offer.getInt("id");
-                        listAdapter.addItem(image,title,owner,new Date(),id);
-                    }
-                    listAdapter.notifyDataSetChanged();
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }
-            else{
-                Toast.makeText(MainActivity.this, ""+httpRequestHelper.getData(),
-                        Toast.LENGTH_LONG).show();
-            }
+            nextURL = getNextURL();
         }
     }
 

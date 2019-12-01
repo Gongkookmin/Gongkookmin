@@ -2,6 +2,7 @@ package com.example.gongkookmin;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -47,6 +48,8 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
         public ViewHolder(View itemView, int mode){
             super(itemView);
             this.mode = mode;
+            if(mode == VIEW_MODE)
+                itemView.setBackgroundColor(Color.WHITE);
             imageView = itemView.findViewById(R.id.pictureImageView);
             imageView.setOnClickListener(this);
         }
