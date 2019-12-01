@@ -16,13 +16,13 @@
         android:textColor="#000000"
         android:textSize="50sp" />
 
-        <EditText
-            android:id="@+id/nicknameText"
-            android:layout_width="277dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="Nickname" />
+    <EditText
+        android:id="@+id/nicknameText"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="Nickname (2~8자)" />
 
         <EditText
             android:id="@+id/mailText"
@@ -32,14 +32,14 @@
             android:hint="Univ Email@kookmin.ac.kr"
             android:layout_gravity="center"/>
 
-        <EditText
-            android:id="@+id/passwordText"
-            android:layout_width="277dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Password"
-            android:layout_gravity="center"/>
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="Password (4 ~ 16자)"
+        android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30sp"
             android:layout_marginBottom="15sp"
-            android:text="학교 메일, 개인 정보 이용 동의"
+            android:text="학교 메일, 개인 정보 이용 동의(필수)"
             android:textColor="#000000"
             android:textSize="20sp" />
 
