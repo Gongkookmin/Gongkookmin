@@ -19,12 +19,19 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import java.util.regex.Pattern;
+
 
 public class LoginActivity extends AppCompatActivity {
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9]+@kookmin.ac.kr+$", Pattern.CASE_INSENSITIVE);
 
     Button btn_login;
     EditText input_id;
     EditText input_pw;
+
+    private boolean checkEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +47,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String id = input_id.getText().toString();
                 String pw = input_pw.getText().toString();
-                JsonMaker json = new JsonMaker();
-                json.putData("email",id);
-                json.putData("password",pw);
 
-                BackgroundTask task = new BackgroundTask();
-                task.execute(getResources().getString(R.string.server_address)+"rest-auth/login/"
-                        ,HttpRequestHelper.POST,json.toString());
+                if (id.isEmpty() || pw.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "이메일과 비밀번호 모두 입력하셔야 합니다.", Toast.LENGTH_SHORT).show();
+                } else if (!checkEmail(id)) {
+                    Toast.makeText(LoginActivity.this, "국민대학교 이메일 형식인지 확인하세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    JsonMaker json = new JsonMaker();
+                    json.putData("email", id);
+                    json.putData("password", pw);
+
+                    BackgroundTask task = new BackgroundTask();
+                    task.execute(getResources().getString(R.string.server_address) + "rest-auth/login/"
+                            , HttpRequestHelper.POST, json.toString());
+                }
             }
         });
 

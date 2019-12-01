@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText emailEdit = (EditText)findViewById(R.id.mailText);
         final EditText passwordEdit = (EditText)findViewById(R.id.passwordText);
         final EditText passwordCheckEdit = (EditText)findViewById(R.id.passwordCheckText);
+        final EditText nicknameEdit = (EditText)findViewById(R.id.nicknameText);
 
         /* 작성자 : 이재욱
            업데이트 : 2019년 11월 30일 12시
@@ -64,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         final ImageView correctImg = (ImageView)findViewById(R.id.imgNotSame);
 
-        /* 작성자 : 이재욱 */
         passwordCheckEdit.addTextChangedListener(new TextWatcher() {    // Checking password
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -86,15 +86,19 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
+                String nickname = nicknameEdit.getText().toString();
                 boolean use = Use_radio.isChecked();
                 if(!checkEmail(email)){
-                    Toast.makeText(getApplicationContext(), "Email 형식을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "국민대학교 이메일만 가입할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if(!checkPassword(password)){
                     Toast.makeText(getApplicationContext(), "비밀번호 형식을 확인해 주세요.", Toast.LENGTH_SHORT).show();
                 }
                 else if(!passwordEdit.getText().toString().equals(passwordCheckEdit.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "비밀번호가 확인과 같은지 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else if (nickname.length() < 2 || nickname.length() > 8) {    // 닉네임 규칙 확인 추가(작성자 : 이재욱, 2019.12.01)
+                    Toast.makeText(getApplicationContext(), "닉네임이 두 글자 이상 여덟 글자 이하이어야 합니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if(!use){
                     Toast.makeText(getApplicationContext(), "이용약관에 동의해주세요.", Toast.LENGTH_SHORT).show();
