@@ -1,5 +1,3 @@
-/* 작성자 : 이재욱
- *  작성 시간 : 2019년 11월 29일 02시 15분 */
 package com.example.gongkookmin;
 
 import android.content.Context;
