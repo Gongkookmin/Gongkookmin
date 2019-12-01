@@ -41,29 +41,29 @@
         android:hint="Password (4 ~ 16자)"
         android:inputType="textPassword" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/passwordCheckText"
+            android:layout_width="277dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="40dp">
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="checkPassword"
+            android:inputType="textPassword" />
 
-
-            <EditText
-                android:id="@+id/passwordCheckText"
-                android:layout_width="277dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:hint="checkPassword"
-                android:layout_marginLeft="67dp"/>
-
-            <ImageView
-                android:id="@+id/imgNotSame"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
-                android:layout_marginLeft="10dp"
-                android:scaleType="fitStart" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/imgNotSame"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitStart" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
