@@ -25,8 +25,8 @@ public class HttpRequestHelper {
     public static final String PUT = "PUT";
 
 
-    String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Ijg5ODI2NzkiLCJleHAiOjE1NzUwMjI1NzgsImVtYWlsIjoiODk4MjY3OUBnbWFpbC5jb20ifQ.Lm9hMHdeSrtD1ArbmccMi7sWa_DCXPLe0Dk9Y79Yg8U";
-    // 삭제해야됨.
+    String TOKEN = "";
+    boolean hasTOKEN = false;
 
     URL url;
     HttpURLConnection connection = null;
@@ -57,6 +57,11 @@ public class HttpRequestHelper {
         }
     }
 
+    public void setToken(String token){
+        TOKEN = token;
+        hasTOKEN = true;
+    }
+
     public boolean isConnectionNull(){
         return connection == null;
     }
@@ -84,17 +89,16 @@ public class HttpRequestHelper {
         result = "";
         try {
             Log.d("data ",data);
-            connection.setReadTimeout(5000);
-            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(10000);
             connection.setRequestMethod(requestMethod);
-            connection.setRequestProperty("authorization",TOKEN);
+            if(hasTOKEN)
+                connection.setRequestProperty("authorization","Bearer "+TOKEN);
             connection.setRequestProperty("charset","UTF-8");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
             //connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setRequestProperty("Content-Type","application/json");
             connection.setRequestProperty("Accept","*/*");
-            connection.setUseCaches(false);
-            connection.setDefaultUseCaches(false);
             if(requestMethod != GET)
                 connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -109,7 +113,10 @@ public class HttpRequestHelper {
             }
 
             BufferedReader reader;
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            int code = connection.getResponseCode();
+            if (!(code == HttpURLConnection.HTTP_OK ||
+                    code == HttpURLConnection.HTTP_CREATED ||
+                    code == HttpURLConnection.HTTP_ACCEPTED)) {
                 reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(),"UTF-8"));
                 isOK = false;
             }

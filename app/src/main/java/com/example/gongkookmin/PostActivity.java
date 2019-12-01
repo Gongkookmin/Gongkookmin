@@ -43,10 +43,13 @@ public class PostActivity extends AppCompatActivity {
 
     ArrayList<Bitmap> pictureList = new ArrayList<>();
 
+    TokenHelper tokenHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        tokenHelper = new TokenHelper(getSharedPreferences(TokenHelper.PREF_NAME,MODE_PRIVATE));
         titleEditText = findViewById(R.id.titleEditText);
         articleEditText = findViewById(R.id.articleEditText);
         kakaotalkEditText = findViewById(R.id.kakaotalkEditText);
@@ -145,6 +148,12 @@ public class PostActivity extends AppCompatActivity {
     }
 
     class BackgroundTask extends CommunicationTask{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Token = (tokenHelper.getToken());
+        }
+
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);

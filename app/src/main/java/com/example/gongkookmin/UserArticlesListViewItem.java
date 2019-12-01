@@ -25,8 +25,13 @@ public class UserArticlesListViewItem {
     private String titleStr;
     private String authorStr;
     private Date articleDate;
+    private int id;
 
     /* Setter Methods */
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setIcon(Drawable icon) {
         iconDrawable = icon;
     }
@@ -52,4 +57,7 @@ public class UserArticlesListViewItem {
         return this.authorStr;
     }
     public Date getArticleDate(){return this.articleDate;}
+    public int getId() {
+        return id;
+    }
 }
