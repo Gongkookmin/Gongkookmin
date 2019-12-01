@@ -33,9 +33,9 @@ public class SearchActivity extends AppCompatActivity implements ListView.OnItem
         listView = (ListView) findViewById(R.id.searchedArticlesListView);
         ListViewAdapter adapter = new ListViewAdapter();
 
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C", new Date());
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date());
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B",new Date());
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 3", "Ms. C", new Date(), 3);
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date(), 1);
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.nurse),  "Example 2", "Mr. B",new Date(), 2);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);

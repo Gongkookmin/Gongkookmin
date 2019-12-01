@@ -36,8 +36,8 @@ public class MyPageActivity extends AppCompatActivity implements ListView.OnItem
         listView = (ListView) findViewById(R.id.articlesListView);
         ListViewAdapter adapter = new ListViewAdapter();
 
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date());
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 2", "Ms. B", new Date());
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shark), "Example 1", "Mr. A",new Date(), 1);
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.coffee), "Example 2", "Ms. B", new Date(), 2);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
