@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,20 +107,15 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     JSONObject json = new JSONObject();
                     try {
-                        JSONArray array = new JSONArray();
-                        JSONObject user = new JSONObject();
-                        user.put("username", email);
-                        user.put("password",password);
-                        user.put("first_name","");
-                        user.put("last_name","");
-                        user.put("USE",use);
-                        array.put(user);
-                        json.put("user",user);
+                        json.put("email", email);
+                        json.put("password1",password);
+                        json.put("password2",password);
+                        json.put("username","jo");
                     }catch(JSONException e) {
                         e.printStackTrace();
                     }
                     BackgroundTask task = new BackgroundTask();
-                    task.execute(getResources().getString(R.string.server_address)+"users/create",
+                    task.execute(getResources().getString(R.string.server_address)+"rest-auth/registration/",
                             HttpRequestHelper.POST,json.toString());
                 }
             }
@@ -139,12 +135,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
             if(values[0]) {
                 try {
-                    if (jsonObject.getString("response").equals("error")) {
-                        Log.d("data ",httpRequestHelper.getData());
-                        Toast.makeText(RegisterActivity.this, "회원가입 양식을 다시 확인해주세요", Toast.LENGTH_SHORT).show();
-                    } else if (jsonObject.getString("response").equals("success")){
-                        Toast.makeText(RegisterActivity.this, "회원가입이 정상적으로 처리되었습니다. 메일을 확인해주세요", Toast.LENGTH_SHORT).show();
-                        finish();
+                    Iterator<String> iter = jsonObject.keys();
+                    while(iter.hasNext()){
+                        String key = iter.next();
+                        switch (key){
+                            case "detail":
+                                String value = jsonObject.getString(key);
+                                Toast.makeText(RegisterActivity.this, value, Toast.LENGTH_SHORT).show();
+                                finish();
+                        }
+                        break;
                     }
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -152,7 +152,27 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             else{
-                Toast.makeText(RegisterActivity.this, "아이디 혹은 비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
+                try {
+                    Iterator<String> iter = jsonObject.keys();
+                    while(iter.hasNext()){
+                        String key = iter.next();
+                        JSONArray array = jsonObject.getJSONArray(key);
+                        switch (key){
+                            case "non_field_errors":
+                            case "username":
+                            case "email":
+                                Toast.makeText(RegisterActivity.this, array.getString(0), Toast.LENGTH_SHORT).show();
+                                break;
+                            case "password1":
+                                Toast.makeText(RegisterActivity.this, "비밀번호를 다시 확인해주세요", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        break;
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(RegisterActivity.this, "서버와의 연결에 문제가 있습니다", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

@@ -63,10 +63,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String nextURL;
     boolean isListEnd = false;
 
+    TokenHelper tokenHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tokenHelper = new TokenHelper(getSharedPreferences(TokenHelper.PREF_NAME,MODE_PRIVATE));
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -159,30 +162,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ,HttpRequestHelper.GET,null);
     }
 
-    /* 작성자 : 이재욱
-       업데이트 : 2019년 11월 29일 2시 30분
-       작성자 이름과 사진을 인텐트를 통해서 ArticleActivity로 보낼 수 있게 기능을 추가하였다. */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {    // item을 클릭하면 ArticleActivity로 넘어간다.
 
         UserArticlesListViewItem item = (UserArticlesListViewItem) adapterView.getItemAtPosition(i);
-        String authorStr = item.getAuthor();
-        String titleStr = item.getTitle();
-        Drawable iconDrawable = item.getIcon();
-
-        /* Change drawable object to bitmap object for sending via intent */
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap iconBitmap = ((BitmapDrawable) iconDrawable).getBitmap();
-        float scale = (float) (1024 / (float)iconBitmap.getWidth());
-        int width = (int) (iconBitmap.getWidth() * scale);
-        int height = (int) (iconBitmap.getHeight() * scale);
-        Bitmap resizedIcon = Bitmap.createScaledBitmap(iconBitmap, width, height, true);
-        resizedIcon.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+        int id = item.getId();
 
         Intent intent = new Intent(getApplication(), ArticleActivity.class);
-        intent.putExtra("author", authorStr);
-        intent.putExtra("iconBitmap", byteArray);
+        intent.putExtra("id", id);
         startActivity(intent);
 
     }
@@ -193,6 +180,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.drawer_open,R.string.drawer_close);
         drawer.addDrawerListener(drawerToggle);
         navigationView.setNavigationItemSelectedListener(this);
+        View nav_header = navigationView.getHeaderView(0);
+        TextView user_id = nav_header.findViewById(R.id.user_id);
+        TextView user_email = nav_header.findViewById(R.id.user_email);
+        user_id.setText(tokenHelper.getUserName());
+        user_email.setText(tokenHelper.getEmail());
 
         TextView tv_linkToTOS = findViewById(R.id.tv_linkToTOS);
         tv_linkToTOS.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +212,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     class BackgroundTask extends CommunicationTask{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Token = (tokenHelper.getToken());
+        }
+
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
@@ -260,7 +258,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String title = offer.getString("title");
                         String updateTime = offer.getString("updated_at");
                         String owner = offer.getString("owner");
-                        listAdapter.addItem(image,title,owner,new Date());
+                        int id = offer.getInt("id");
+                        listAdapter.addItem(image,title,owner,new Date(),id);
                     }
                     listAdapter.notifyDataSetChanged();
                 }catch (JSONException e){

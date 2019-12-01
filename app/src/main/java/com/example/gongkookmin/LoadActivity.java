@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 
 public class LoadActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class LoadActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TokenHelper tokenHelper = new TokenHelper(getSharedPreferences("pref",MODE_PRIVATE));
+                Log.d("TOKEN",tokenHelper.getToken());
                 if(tokenHelper.getToken() != ""){
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);

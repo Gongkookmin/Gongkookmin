@@ -13,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Iterator;
 
 import java.util.regex.Pattern;
 
@@ -47,17 +50,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (id.isEmpty() || pw.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "이메일과 비밀번호 모두 입력하셔야 합니다.", Toast.LENGTH_SHORT).show();
-                }
-                else if (!checkEmail(id)) {
+                } else if (!checkEmail(id)) {
                     Toast.makeText(LoginActivity.this, "국민대학교 이메일 형식인지 확인하세요.", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     JsonMaker json = new JsonMaker();
-                    json.putData("username", id);
+                    json.putData("email", id);
                     json.putData("password", pw);
 
                     BackgroundTask task = new BackgroundTask();
-                    task.execute(getResources().getString(R.string.server_address) + "token-auth/"
+                    task.execute(getResources().getString(R.string.server_address) + "rest-auth/login/"
                             , HttpRequestHelper.POST, json.toString());
                 }
             }
@@ -88,20 +89,40 @@ public class LoginActivity extends AppCompatActivity {
                 String token;
                 try {
                     token = jsonObject.getString("token");
-                    TokenHelper tokenHelper = new TokenHelper(getSharedPreferences("pref",MODE_PRIVATE));
-                    if(tokenHelper.setToken(token)) {   // token 이 성공적으로 저장된다면
+                    JSONObject user = jsonObject.getJSONObject("user");
+                    String username = user.getString("username");
+                    String email = user.getString("email");
+                    TokenHelper tokenHelper = new TokenHelper(getSharedPreferences(TokenHelper.PREF_NAME,MODE_PRIVATE));
+                    if(tokenHelper.setToken(token) && tokenHelper.setEmail(email) && tokenHelper.setUserName(username)) {   // token 이 성공적으로 저장된다면
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
+                    else{
+                        tokenHelper.clearToken();
+                        Toast.makeText(LoginActivity.this, "다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                    }
                 }catch (JSONException e){
                     e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, "죄송합니다. 이메일로 연락해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
             else{
-                Toast.makeText(LoginActivity.this, ""+httpRequestHelper.getData(),
-                        Toast.LENGTH_LONG).show();
+                try{
+                    Iterator<String> iter = jsonObject.keys();
+                    while(iter.hasNext()){
+                        String key = iter.next();
+                        JSONArray value = jsonObject.getJSONArray(key);
+                        switch(key){
+                            case "non_field_errors":
+                                Toast.makeText(LoginActivity.this, value.getString(0), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, "죄송합니다. 이메일로 연락해주세요", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

@@ -60,13 +60,14 @@ public class ListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(Drawable icon, String title, String author, Date date) {
+    public void addItem(Drawable icon, String title, String author, Date date,int id) {
         UserArticlesListViewItem item = new UserArticlesListViewItem();
 
         item.setIcon(icon);
         item.setTitle(title);
         item.setAuthor(author);
         item.setArticleDate(date);
+        item.setId(id);
 
         listViewItems.add(item);
     }

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 public class ArticleActivity extends AppCompatActivity {
 
+    int id;
+
     RecyclerView pictureListView;
     Toolbar toolbar;
     ActionBar actionBar;
@@ -35,7 +37,7 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
 
         Intent intent = getIntent();
-        String authorStr = intent.getStringExtra("author");
+        id = intent.getIntExtra("id",0);
 
         /* Convert byte[] to Bitmap */
         byte[] byteArray =  intent.getByteArrayExtra("iconBitmap");
@@ -45,7 +47,6 @@ public class ArticleActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_article);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        actionBar.setTitle(authorStr);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         /* 될까 싶어서 아무 오픈 카톡 주소를 넣어봤지만 작성자의 AVD에 카톡이 없어서 그런지
