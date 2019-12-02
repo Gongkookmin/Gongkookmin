@@ -63,16 +63,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         final RadioButton Use_radio = (RadioButton)findViewById(R.id.btnAgree);
 
-        final ImageView correctImg = (ImageView)findViewById(R.id.imgNotSame);
+        //final ImageView correctImg = (ImageView)findViewById(R.id.imgNotSame);
 
         passwordCheckEdit.addTextChangedListener(new TextWatcher() {    // Checking password
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            // 비밂번호가 다르면 그림을 띄우는 대신에 EditText에 에러를 설정. (업데이트 : 2019.12.02 12시)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (passwordEdit.getText().toString().equals(passwordCheckEdit.getText().toString())) { correctImg.setImageResource(android.R.drawable.presence_online); }
-                else { correctImg.setImageResource(android.R.drawable.ic_delete); }
+                if (!passwordEdit.getText().toString().equals(passwordCheckEdit.getText().toString())) { passwordCheckEdit.setError("일치하지 않습니다."); }
             }
 
             @Override
