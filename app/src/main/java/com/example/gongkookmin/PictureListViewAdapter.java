@@ -1,6 +1,7 @@
 package com.example.gongkookmin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -137,8 +140,10 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
                     break;
                 }
                 case VIEW_MODE: {
-                    // TODO
-
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(context, ImageviewActivity.class);
+                    intent.putExtra("url",pictureList.get(position).toString());
+                    context.startActivity(intent);
                     break;
                 }
             }

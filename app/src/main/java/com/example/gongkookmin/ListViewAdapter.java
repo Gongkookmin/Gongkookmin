@@ -19,6 +19,11 @@ public class ListViewAdapter extends BaseAdapter {
     private ArrayList<UserArticlesListViewItem> listViewItems = new ArrayList<UserArticlesListViewItem>();
 
     @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @Override
     public int getCount() {
         return listViewItems.size();
     }

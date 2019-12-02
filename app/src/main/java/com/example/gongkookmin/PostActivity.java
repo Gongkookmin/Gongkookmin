@@ -338,13 +338,13 @@ public class PostActivity extends AppCompatActivity {
                     String label = "";
                     switch(i){
                         case 0: label = "image"; break;
-                        case 1: label = "image1"; break;
-                        case 2: label = "image2"; break;
+                        case 1: label = "image2"; break;
+                        case 2: label = "image3"; break;
                     }
                     httphelper.addFilePart(label,file[i]);
-                    boolean flag = httphelper.finish();
-                    publishProgress(flag);
                 }
+                boolean flag = httphelper.finish();
+                publishProgress(flag);
             }catch(IOException e){
                 e.printStackTrace();
                 publishProgress(false);

@@ -40,6 +40,10 @@ import java.util.Iterator;
 public class ArticleActivity extends AppCompatActivity {
 
     int id;
+    int article_owner;
+
+    String owner_name ="유저";
+    Menu menu;
 
     Button btnKakaotalk;
     ProgressBar progressBar;
@@ -76,14 +80,16 @@ public class ArticleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getIntExtra("id",0);
 
-        BackgroundTask task = new BackgroundTask();
-        task.execute(getResources().getString(R.string.server_address)+"offer/"+id
-                ,HttpRequestHelper.GET,null);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.article_menu,menu);
+
+        BackgroundTask task = new BackgroundTask();
+        task.execute(getResources().getString(R.string.server_address)+"offer/"+id
+                ,HttpRequestHelper.GET,null);
         return true;
     }
 
@@ -139,6 +145,8 @@ public class ArticleActivity extends AppCompatActivity {
                 pictureListView.getAdapter().notifyItemInserted(0);
                 pictureListView.getAdapter().notifyDataSetChanged();
             }
+            MenuItem item = menu.findItem(R.id.btn_categoryUser);
+            item.setTitle(owner_name);
         }
 
         @Override
@@ -179,6 +187,7 @@ public class ArticleActivity extends AppCompatActivity {
                 detailBody.setVisibility(View.VISIBLE);
                 try {
                     Iterator<String> keys = jsonObject.keys();
+                    int cnt_image = 0;
                     while(keys.hasNext()){
                         String key = keys.next();
                         switch(key){
@@ -186,10 +195,11 @@ public class ArticleActivity extends AppCompatActivity {
                                 //DO NOTHING
                             }
                             case "owner":{
-                                //TODO
+                                article_owner = jsonObject.getInt(key);
+                                break;
                             }
                             case "owner_name":{
-                                //TODO
+                                owner_name = jsonObject.getString(key);
                                 break;
                             }
                             case "title":{
@@ -215,6 +225,19 @@ public class ArticleActivity extends AppCompatActivity {
                                         startActivity(intent_link);
                                     }
                                 });
+                                break;
+                            }
+                            case "image":
+                            case "image2":
+                            case "image3": {
+                                if(jsonObject.isNull(key))
+                                    break;
+                                String value = jsonObject.getString(key);
+                                Uri uri = Uri.parse(value);
+                                imageUri.add(uri);
+                                pictureListView.getAdapter().notifyItemRangeChanged(cnt_image, cnt_image+1);
+                                pictureListView.getAdapter().notifyItemInserted(cnt_image++);
+                                pictureListView.getAdapter().notifyDataSetChanged();
                                 break;
                             }
                         }

@@ -40,6 +40,7 @@
         android:layout_height="1px"/>
     <TextView
         android:visibility="gone"
+        android:padding="10dp"
         android:id="@+id/detail_Body_TextView"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
