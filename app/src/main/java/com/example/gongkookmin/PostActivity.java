@@ -393,9 +393,9 @@ public class PostActivity extends AppCompatActivity {
     public boolean isArticleRuleOK(String title, String article, String kakaotalk){
         int title_len = title.length();
         int article_len = article.length();
-        if(title_len < 2 || title_len > 15) // 제목 길이 2 ~ 15 규칙 확인
+        if(title_len < 2 || title_len > 20) // 제목 길이 2 ~ 15 규칙 확인
             return false;
-        if(article_len < 5 || article_len > 300) // 본문 길이 5 ~ 300 규칙 확인
+        if(article_len < 5 || article_len > 400) // 본문 길이 5 ~ 300 규칙 확인
             return false;
 
         String pattern = "^((http(s)?://)?open.kakao.com/o/)[a-zA-Z0-9]+$"; // 링크가 오픈카톡이 맞는지 확인

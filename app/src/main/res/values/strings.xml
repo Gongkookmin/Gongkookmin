@@ -1,6 +1,6 @@
 <resources>
-    <!--<string name="server_address">http://61.37.57.170:8000/</string>-->
-    <string name="server_address">http://10.0.2.2:8000/</string>
+    <string name="server_address">http://61.37.57.170:8000/</string>
+    <!--<string name="server_address">http://10.0.2.2:8000/</string>-->
     <string name="app_name">Gongkookmin</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
@@ -12,8 +12,8 @@
         5장. 공동 구매 과정에서 생기는 법적인 문제는 저희와 상관없음을\n\t\t\t\t 알려드립니다.\n\n
 
     </string>
-    <string name="post_title_rule">공구글 제목(2글자 이상, 15글자 이하)</string>
-    <string name="post_article_rule">\t공구글 내용(5글자 이상, 300글자 이하)</string>
+    <string name="post_title_rule">공구글 제목(2글자 이상, 20글자 이하)</string>
+    <string name="post_article_rule">\t공구글 내용(5글자 이상, 400글자 이하)</string>
     <string name="post_kakaotalk_rule">그룹 채팅방으로 만들어주세요</string>
     <string name="post_picture_rule">공구물품 사진(최소0장, 최대 3장)</string>
 </resources>
