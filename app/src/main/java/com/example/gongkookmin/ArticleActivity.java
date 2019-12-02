@@ -147,6 +147,10 @@ public class ArticleActivity extends AppCompatActivity {
             }
             MenuItem item = menu.findItem(R.id.btn_categoryUser);
             item.setTitle(owner_name);
+            if(owner_name.equals(tokenHelper.getUserName())){}
+            else{
+                menu.removeItem(R.id.btn_deleteArticle);
+            }
         }
 
         @Override
