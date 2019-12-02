@@ -1,5 +1,6 @@
 package com.example.gongkookmin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -76,6 +77,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     class BackgroundTask extends CommunicationTask {
+        ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("로그인 중");
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            dialog.dismiss();
+        }
+
         @Override
         protected void onProgressUpdate(Boolean... values) {
             super.onProgressUpdate(values);

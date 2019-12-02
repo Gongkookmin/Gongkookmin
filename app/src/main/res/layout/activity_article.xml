@@ -18,19 +18,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scrollbars="horizontal"
-        android:id="@+id/pictureViewerListView"
-        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="horizontal"
+            android:id="@+id/pictureViewerListView"
+            />
+
+    </LinearLayout>
     <View
         android:background="#000000"
         android:layout_width="match_parent"
         android:layout_height="1px"/>
     <TextView
+        android:visibility="gone"
         android:id="@+id/detail_Body_TextView"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
@@ -44,6 +53,7 @@
         android:layout_height="1px"/>
 
     <Button
+        android:visibility="gone"
         android:id="@+id/btnOpenKakaoLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

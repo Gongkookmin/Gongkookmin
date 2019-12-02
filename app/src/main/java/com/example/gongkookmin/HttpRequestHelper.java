@@ -24,6 +24,8 @@ public class HttpRequestHelper {
     public static final String DELETE = "DELETE";
     public static final String PUT = "PUT";
 
+    String boundary = "^-----^";
+    String LINE_FEED = "\r\n";
 
     String TOKEN = "";
     boolean hasTOKEN = false;
@@ -101,7 +103,8 @@ public class HttpRequestHelper {
             connection.setRequestProperty("Accept","*/*");
             if(requestMethod != GET)
                 connection.setDoOutput(true);
-            connection.setDoInput(true);
+            if(requestMethod != DELETE)
+                connection.setDoInput(true);
 
             if(requestMethod != GET) {
                 DataOutputStream writer;
@@ -114,6 +117,13 @@ public class HttpRequestHelper {
 
             BufferedReader reader;
             int code = connection.getResponseCode();
+            if(requestMethod == DELETE){
+                result = ""+code;
+                isOK = true;
+                if(connection != null)
+                    connection.disconnect();
+                return isOK;
+            }
             if (!(code == HttpURLConnection.HTTP_OK ||
                     code == HttpURLConnection.HTTP_CREATED ||
                     code == HttpURLConnection.HTTP_ACCEPTED)) {
@@ -153,6 +163,8 @@ public class HttpRequestHelper {
         if(isConnectionNull())
             return false;   // connection이 안만들어졋다면 문제가 있기때문에 false. 이 값으로 알림 만들기.
         switch(requestMethod){
+            case DELETE:
+            case PUT:
             case GET :
             case POST :
                 return sendByPost();

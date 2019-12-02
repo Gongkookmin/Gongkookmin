@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_deleteArticle"
+        android:title="삭제"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:title="유저"
+        android:id="@+id/btn_categoryUser"
+        app:showAsAction="always|withText">
+        <menu>
+            <item
+                android:id="@+id/btn_abuseUser"
+                android:title="신고하기"
+                >
+            </item>
+        </menu>
+    </item>
+</menu>

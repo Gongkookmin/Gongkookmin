@@ -1,8 +1,13 @@
 package com.example.gongkookmin;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -12,17 +17,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListViewAdapter.ViewHolder> {
     public static final int VIEW_MODE = 1;  // 사진 보기 모드
     public static final int EDIT_MODE = 2;  // 사진 삭제 모드
 
-    private ArrayList<Bitmap> pictureList;  // 사진 목록
+    private ArrayList<Uri> pictureList;  // 사진 목록
     private Context context;
     int mode;
 
-    public PictureListViewAdapter(Context context, ArrayList<Bitmap> pictureList, int mode){
+    public PictureListViewAdapter(Context context, ArrayList<Uri> pictureList, int mode){
         this.pictureList = pictureList;
         this.mode = mode;
     }
@@ -36,10 +47,67 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
         return new ViewHolder(view, mode);
     }
 
+    class BackgroundTask extends AsyncTask<String,Boolean,Boolean>{
+        ImageView imageView;
+        Bitmap bitmap;
+        boolean isOK;
+        public BackgroundTask(ImageView imageView){
+            this.imageView = imageView;
+            isOK = false;
+        }
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            try {
+                URL url = new URL(strings[0]);
+                URLConnection conn = url.openConnection();
+                conn.connect();
+                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                bitmap = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+                isOK = true;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                isOK = false;
+            }catch (IOException e){
+                e.printStackTrace();
+                isOK = false;
+            }
+            publishProgress(isOK);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Boolean... values) {
+            super.onProgressUpdate(values);
+            if(values[0])
+                imageView.setImageBitmap(bitmap);
+            else
+                imageView.setImageResource(R.drawable.basic_image);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            imageView.setImageResource(R.drawable.load_image);
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Bitmap bitmap = pictureList.get(position);
-        holder.imageView.setImageBitmap(bitmap);
+        Uri uri = pictureList.get(position);
+        if(uri.getScheme().contains("http")) {
+            Log.d("image from", "http");
+            BackgroundTask task = new BackgroundTask(holder.imageView);
+            task.execute(uri.toString());
+        }
+        else {
+            holder.imageView.setImageURI(uri);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -87,7 +155,7 @@ public class PictureListViewAdapter extends RecyclerView.Adapter<PictureListView
         return super.getItemId(position);
     }
 
-    public Bitmap getItem(int position){
+    public Uri getItem(int position){
         return pictureList.get(position);
     }
 }
