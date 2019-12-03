@@ -6,18 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.example.gongkookmin.CommunicationTask;
-import com.example.gongkookmin.R;
-import com.example.gongkookmin.SearchActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +19,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 
 
 class ListGetTask extends CommunicationTask{
@@ -39,19 +29,19 @@ class ListGetTask extends CommunicationTask{
         return ListEnd;
     }
 
-    public String getNextURL() {
-        return nextURL;
+    public String getNextPage() {
+        return nextPage;
     }
 
     public void setListEnd(boolean listEnd) {
         ListEnd = listEnd;
     }
 
-    public void setNextURL(String nextURL) {
-        this.nextURL = nextURL;
+    public void setNextPage(String nextPage) {
+        this.nextPage = nextPage;
     }
 
-    String nextURL = "";
+    String nextPage = "";
     ListViewAdapter listAdapter;
 
     public ListGetTask(Context context, ListViewAdapter listAdapter){
@@ -76,7 +66,7 @@ class ListGetTask extends CommunicationTask{
                 }
                 else{
                     String next = jsonObject.getString("next");
-                    nextURL = (next);
+                    nextPage = (next);
                 }
                 JSONArray list = jsonObject.getJSONArray("results");
                 for(int i = 0;i<list.length();i++){
